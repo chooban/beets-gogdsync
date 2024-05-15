@@ -16,7 +16,6 @@ def download_tracks(mbid):
                                                             "work-rels",
                                                             "work-level-rels",
                                                         ])
-        # print(json.dumps(release_info, indent=4))
     
         playlist = {}
         playlist["title"] = release_info.get("release").get("title")
@@ -37,7 +36,6 @@ def download_tracks(mbid):
                 else:
                     if last_date is not None:
                         d = last_date
-                print(f"Track {track.get('number')}: {recording.get('title')} ({d})")
 
                 playlist["tracks"].append({
                     "title": recording.get("title"),
@@ -49,7 +47,6 @@ def download_tracks(mbid):
 
         with open("playlist.yml", "w") as file:
             dump(playlist, file, sort_keys=False)
-        # print(dump(playlist, Dumper=Dumper, sort_keys=False)) 
 
     except musicbrainzngs.ResponseError as e:
         print("MusicBrainz API error:", e)
