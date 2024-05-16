@@ -5,3 +5,4 @@ musiclibrary.blb
 config.yaml
 beets_gogd_plex.egg-info/
 beets_gogdplex.egg-info/
+beetsplug/__pycache__/

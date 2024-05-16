@@ -1,6 +1,9 @@
 import musicbrainzngs
-import sys
+# import sys
 from yaml import dump
+import os
+import pathlib
+import yaml
 
 musicbrainzngs.set_useragent("beets-gogdplex", "0.1", "rhendry@gmail.com")
 
@@ -30,13 +33,16 @@ def download_tracks(mbid):
                 performances = list(filter(lambda x: x.get("type") == "performance", work_relations))
                 d = "unknown"
                 if len(performances) > 0:
-                    d = performances[0].get("begin")
-                    if d is not None:
+                    _d = performances[0].get("begin")
+                    if _d is not None:
+                        d = _d
                         last_date = d
                 else:
+                    print(f"No performances for {track}")
                     if last_date is not None:
                         d = last_date
 
+                print(f"Setting date for {recording.get('title')} to {_d}")
                 playlist["tracks"].append({
                     "title": recording.get("title"),
                     "date": d,
@@ -52,9 +58,12 @@ def download_tracks(mbid):
         print("MusicBrainz API error:", e)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <musicbrainz release id>")
-    else:
-        mbid = sys.argv[1]
-        download_tracks(mbid)
+    config = pathlib.Path(
+        os.path.join(pathlib.Path(__file__).parent.absolute(), "releases.yml")
+    )
+    with open(str(config), "r") as f_config:
+        c = yaml.safe_load(f_config)
+     
+    for r in c["releases"]:
+        download_tracks(r.get("mbid"))
 

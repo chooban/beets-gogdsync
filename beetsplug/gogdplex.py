@@ -54,11 +54,10 @@ class GogdPlug(BeetsPlugin):
                 if track.parentTitle == item.album and track.title == item.title:
                     return track
         else:
-            self._log.debug("Track {} not found in Plex library", item)
+            self._log.info("Track {} not found in Plex library", item)
             return None
 
     def _create_playlist(self, lib, title, tracks):
-        print(title)
         with lib.transaction():
             playlist_tracks = []
             for t in tracks:
