@@ -7,6 +7,36 @@ import yaml
 
 musicbrainzngs.set_useragent("beets-gogdplex", "0.1", "rhendry@gmail.com")
 
+def _add_track_to_file(t):
+    d = t["date"]
+    output_dir = pathlib.Path(
+        os.path.join(pathlib.Path(__file__).parent.parent.absolute(), "beetsplug", "playlists")
+    )
+    playlist_file = os.path.join(str(output_dir), f"{d}.yml")
+
+    if not os.path.isfile(playlist_file):
+        print(f"Writing new playlist: {d}")
+        with open(playlist_file, "w") as file:
+            playlist = {}
+            playlist["title"] = f"GOGD - {d} - {t['from']}"
+            playlist["tracks"] = [t]
+            dump(playlist, file, sort_keys=False)
+
+        return
+
+    with open(playlist_file, "r") as pf:
+        existing_playlist = yaml.safe_load(pf)
+
+    # print(f"Checking {d}.yml for {t.get('mbid')}")
+    if list(filter(lambda x: x["mbid"] == t["mbid"], existing_playlist.get("tracks"))):
+        return
+
+    # print(f"Adding {t.get('mbid')} to playlist")
+    existing_playlist["tracks"].append(t)
+
+    with open(playlist_file, "w") as file:
+        dump(existing_playlist, file, sort_keys=False)
+
 def download_tracks(mbid):
     try:
         print(f"Getting release data for {mbid}")
@@ -38,11 +68,9 @@ def download_tracks(mbid):
                         d = _d
                         last_date = d
                 else:
-                    print(f"No performances for {track}")
                     if last_date is not None:
                         d = last_date
 
-                print(f"Setting date for {recording.get('title')} to {_d}")
                 playlist["tracks"].append({
                     "title": recording.get("title"),
                     "date": d,
@@ -51,8 +79,10 @@ def download_tracks(mbid):
                     "from_mbid": release_info.get("release").get("id")
                 })
 
-        with open("playlist.yml", "w") as file:
-            dump(playlist, file, sort_keys=False)
+        for t in playlist["tracks"]:
+            _add_track_to_file(t)
+
+
 
     except musicbrainzngs.ResponseError as e:
         print("MusicBrainz API error:", e)
