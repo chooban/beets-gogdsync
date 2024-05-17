@@ -59,9 +59,9 @@ def download_tracks(mbid):
         playlist["tracks"] = []
 
         last_date = None
-        for m in release_info.get('release').get('medium-list'):
+        for i, m in enumerate(release_info.get('release').get('medium-list')):
             tracks = m.get('track-list')
-            for track in tracks:
+            for j, track in enumerate(tracks):
                 recording = track.get('recording')
                 work_relations = recording.get("work-relation-list", [])
                 performances = list(filter(lambda x: x.get("type") == "performance", work_relations))
@@ -80,7 +80,8 @@ def download_tracks(mbid):
                     "date": d,
                     "mbid": recording.get("id"),
                     "release_title": playlist.get("title"),
-                    "release_mbid": release_info.get("release").get("id")
+                    "release_mbid": release_info.get("release").get("id"),
+                    "release_position": f"{i+1}-{j+1}"
                 })
 
         for t in playlist["tracks"]:
