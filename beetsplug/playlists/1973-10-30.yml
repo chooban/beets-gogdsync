@@ -75,21 +75,6 @@ tracks:
   mbid: 04236d66-f4c8-4316-9fc7-357ea7e80c27
   release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
   release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
-- title: "Goin\u2019 Down the Road Feeling Bad >"
-  date: '1973-10-30'
-  mbid: 48c61eb0-57c2-4f92-a00b-fd8ab565c940
-  release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
-  release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
-- title: Johnny B. Goode
-  date: '1973-10-30'
-  mbid: 1fa16764-518b-40b1-986e-9f35c78392b6
-  release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
-  release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
-- title: One More Saturday Night
-  date: '1973-10-30'
-  mbid: 12c48633-6c6a-46e2-b988-2556f98e917e
-  release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
-  release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
 - title: Dark Star >
   date: '1973-10-30'
   mbid: c2a10771-114e-46f4-b92c-ea5f5968fe7f
@@ -108,5 +93,20 @@ tracks:
 - title: "Weather Report Suite \u2013"
   date: '1973-10-30'
   mbid: 1ded20cd-ca64-4de9-b298-1787b49be228
+  release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
+  release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
+- title: "Goin\u2019 Down the Road Feeling Bad >"
+  date: '1973-10-30'
+  mbid: 48c61eb0-57c2-4f92-a00b-fd8ab565c940
+  release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
+  release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
+- title: Johnny B. Goode
+  date: '1973-10-30'
+  mbid: 1fa16764-518b-40b1-986e-9f35c78392b6
+  release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
+  release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
+- title: One More Saturday Night
+  date: '1973-10-30'
+  mbid: 12c48633-6c6a-46e2-b988-2556f98e917e
   release_title: "Listen to the River: St. Louis \u201971 \u201972 \u201973"
   release_mbid: d50b6763-15b8-44c9-9c86-6fbc73367493

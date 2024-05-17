@@ -18,7 +18,7 @@ def _add_track_to_file(t):
         print(f"Writing new playlist: {d}")
         with open(playlist_file, "w") as file:
             playlist = {}
-            playlist["title"] = f"GOGD - {d} - {t['from']}"
+            playlist["title"] = f"GOGD - {d} - {t['release_title']}"
             playlist["tracks"] = [t]
             dump(playlist, file, sort_keys=False)
 
@@ -26,6 +26,8 @@ def _add_track_to_file(t):
 
     with open(playlist_file, "r") as pf:
         existing_playlist = yaml.safe_load(pf)
+
+    assert existing_playlist is not None
 
     # print(f"Checking {d}.yml for {t.get('mbid')}")
     indices = [i for i, x in enumerate(existing_playlist.get("tracks")) if x["mbid"] == t["mbid"]]
@@ -49,6 +51,7 @@ def download_tracks(mbid):
                                                             "recording-level-rels", 
                                                             "work-rels",
                                                             "work-level-rels",
+                                                            "place-rels",
                                                         ])
     
         playlist = {}
