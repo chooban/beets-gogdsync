@@ -28,18 +28,19 @@ def _add_track_to_file(t):
         existing_playlist = yaml.safe_load(pf)
 
     # print(f"Checking {d}.yml for {t.get('mbid')}")
-    if list(filter(lambda x: x["mbid"] == t["mbid"], existing_playlist.get("tracks"))):
-        return
-
-    # print(f"Adding {t.get('mbid')} to playlist")
-    existing_playlist["tracks"].append(t)
+    indices = [i for i, x in enumerate(existing_playlist.get("tracks")) if x["mbid"] == t["mbid"]]
+    if len(indices) > 1:
+        raise ValueError(f"Duplicate tracks found in {d}")
+    if len(indices) == 0:
+        existing_playlist["tracks"].append(t)
+    else:
+        existing_playlist.get("tracks")[indices[0]] = t
 
     with open(playlist_file, "w") as file:
         dump(existing_playlist, file, sort_keys=False)
 
 def download_tracks(mbid):
     try:
-        print(f"Getting release data for {mbid}")
         # Get release information
         release_info = musicbrainzngs.get_release_by_id(mbid, 
                                                         includes=[
@@ -95,5 +96,6 @@ if __name__ == "__main__":
         c = yaml.safe_load(f_config)
      
     for r in c["releases"]:
+        print(f"Getting release data for {r.get('title')} ({r.get('mbid')})")
         download_tracks(r.get("mbid"))
 
