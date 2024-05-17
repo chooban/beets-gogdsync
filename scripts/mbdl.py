@@ -76,8 +76,8 @@ def download_tracks(mbid):
                     "title": recording.get("title"),
                     "date": d,
                     "mbid": recording.get("id"),
-                    "from": playlist.get("title"),
-                    "from_mbid": release_info.get("release").get("id")
+                    "release_title": playlist.get("title"),
+                    "release_mbid": release_info.get("release").get("id")
                 })
 
         for t in playlist["tracks"]:
