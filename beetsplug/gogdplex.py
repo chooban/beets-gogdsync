@@ -1,17 +1,22 @@
+import argparse
+import traceback
 import os
 import pathlib
+from typing import Callable
 
 import yaml
 from beets import config, ui
 from beets.dbcore.query import MatchQuery
+from beets.library import Item
 from beets.plugins import BeetsPlugin
+from beets.util import normpath
 from plexapi import exceptions
 from plexapi.server import PlexServer
 
 
 class GogdPlug(BeetsPlugin):
     def __init__(self):
-        super().__init__()
+        super(GogdPlug, self).__init__()
 
         self.config_dir = config.config_dir()
 
@@ -34,30 +39,21 @@ class GogdPlug(BeetsPlugin):
             self.plex = PlexServer(baseurl, config["plex"]["token"].get())
         except exceptions.Unauthorized:
             raise ui.UserError("Plex authorization failed")
+
         try:
             self.music = self.plex.library.section(config["plex"]["library_name"].get())
         except exceptions.NotFound:
-            raise ui.UserError(
-                f"{config['plex']['library_name']} \
-                library not found"
-            )
+            raise ui.UserError(f"{config['plex']['library_name']} library not found")
 
-    def search_plex_track(self, item):
-        """Fetch the Plex track key."""
-        tracks = self.music.searchTracks(
-            **{"album.title": item.album, "track.title": item.title}
-        )
-        if len(tracks) == 1:
-            return tracks[0]
-        elif len(tracks) > 1:
-            for track in tracks:
-                if track.parentTitle == item.album and track.title == item.title:
-                    return track
-        else:
-            self._log.info("Track {} not found in Plex library", item)
-            return None
+    def config_playlist_dir(self) -> str:
+        key = "playlist_dir"
+        return normpath(self.config[key].get(str)).decode("utf-8")
 
-    def _create_playlist(self, lib, title, tracks):
+    # def config_relative_to(self) -> str:
+    #     key = "relative_to"
+    #     return normpath(self.config[key].get(str)).decode("utf-8")
+
+    def _create_playlist(self, lib, title, tracks, playlist_dir, remote_dir):
         with lib.transaction():
             playlist_tracks = []
             for t in tracks:
@@ -66,41 +62,81 @@ class GogdPlug(BeetsPlugin):
                 if found:
                     playlist_tracks.append(found[0])
 
-        plex_tracks = list(
-            filter(
-                lambda x: x is not None,
-                [self.search_plex_track(t) for t in playlist_tracks],
-            )
-        )
+        # Create m3u playlist
+        if len(playlist_tracks) == 0:
+            self._log.info("No tracks found for {}", title)
+            return
+
+        item_path: Callable[[Item], str] = lambda item: item.path.decode("utf-8")
+        paths = [item_path(item) for item in playlist_tracks]
+        filename = os.path.join(playlist_dir, title + ".m3u")
+        with open(filename, "w") as file:
+            write_str = "\n".join(paths)
+            file.write(write_str)
+
+        self._log.info("Creating plex playlist from {}", os.path.join(remote_dir, title + ".m3u"))
         try:
-            playlist = self.plex.playlist(title)
-        except exceptions.NotFound:
-            playlist = None
+            self.plex.createPlaylist(title, section=self.music, m3ufilepath=os.path.join(remote_dir, title + ".m3u"))
+        except Exception as e:
+            traceback.print_exc()
+            self._log.error("Error creating playlist: {}", e)
+        
 
-        if playlist is None:
-            self.plex.createPlaylist(title, items=list(plex_tracks))
-        else:
-            current_items = playlist.items()
-            playlist.removeItems(current_items)
-            playlist.addItems(plex_tracks)
+    def sync(self, lib, playlist_dir, remote_dir):
+        if playlist_dir is None:
+            playlist_dir = self.config_playlist_dir()
 
-    def commands(self):
-        sync_command = ui.Subcommand(
-            "gogdsync", help="Sync Grateful Dead releases as plex playlist"
+        # if relative_to is None:
+        #     relative_to = self.config_relative_to()
+
+        base = pathlib.Path(
+            os.path.join(pathlib.Path(__file__).parent.absolute(), "playlists")
+        )
+        for item in base.iterdir():
+            if item.is_dir():
+                continue
+
+            with open(str(item), "r") as _f:
+                data = yaml.safe_load(_f)
+                self._create_playlist(
+                    lib, data["title"], data["tracks"], playlist_dir, remote_dir
+                )
+
+    def commands(self) -> list[ui.Subcommand]:
+        cmd = SyncCommand(self)
+
+        return [cmd]
+
+
+class SyncCommand(ui.Subcommand):
+    name = "gogdsync"
+    aliases = ()
+    help = "Sync Grateful Dead live releases as plex playlists"
+
+    def __init__(self, plugin: GogdPlug):
+        self.plugin = plugin
+
+        parser = argparse.ArgumentParser()
+        parser.set_defaults(func=self.sync)
+
+        subparsers = parser.add_subparsers(
+            prog=parser.prog + " gogdsync", dest="command", required=False
         )
 
-        def sync_playlists(lib, opts, args):
-            base = pathlib.Path(
-                os.path.join(pathlib.Path(__file__).parent.absolute(), "playlists")
-            )
-            for item in base.iterdir():
-                if item.is_dir():
-                    continue
+        sync_parser = subparsers.add_parser("sync")
+        sync_parser.set_defaults(func=self.sync)
+        sync_parser.add_argument("--playlist-dir", dest="playlist_dir", metavar="PATH", help="local directory to write files to")
+        sync_parser.add_argument("--remote-playlist-dir", dest="remote_dir", metavar="PATH", help="where plex will see the playlist_dir")
 
-                with open(str(item), "r") as _f:
-                    data = yaml.safe_load(_f)
-                    self._create_playlist(lib, data["title"], data["tracks"])
+        super(SyncCommand, self).__init__(
+            self.name, parser, self.help, aliases=self.aliases
+        )
 
-        sync_command.func = sync_playlists
+    def sync(self, lib, opts):
+        self.plugin.sync(lib, opts.playlist_dir, opts.remote_dir)
 
-        return [sync_command]
+    def func(self, lib, opts, _):
+        opts.func(lib, opts)
+
+    def parse_args(self, args):
+        return self.parser.parse_args(args), []
