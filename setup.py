@@ -13,12 +13,12 @@ setup(
     packages=["beetsplug"],
     install_requires=[
         "beets>=1.6.0",
-        "plexapi>=4.13.4",
+        "plexapi>=4.15.0",
         "pyyaml>=6"
     ],
     extras_require={
         "dev": [
-            "musicbrainzngs>=0.7.1"
+            "musicbrainzngs>=0.7.0"
         ]
     },
     classifiers=[
