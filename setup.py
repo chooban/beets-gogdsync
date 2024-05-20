@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="beets-gogdplex",
-    version="0.1",
+    version="0.1.1",
     description="beets plugin to create Grateful Dead playlists",
     long_description=open("README.md").read(),
     author="Ross Hendry ",
