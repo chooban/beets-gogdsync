@@ -1,7 +1,7 @@
 import argparse
-import traceback
 import os
 import pathlib
+import traceback
 from typing import Callable
 
 import yaml
@@ -30,13 +30,20 @@ class GogdPlug(BeetsPlugin):
                 "ignore_cert_errors": False,
             }
         )
+
+        default_playlist_dir = os.path.join(config["directory"].get(), ".playlists")
+        self._log.info("Default playlist_dir: {}", default_playlist_dir)
+        config["gogdplex"].add({"playlist_dir": default_playlist_dir})
+        config["gogdplex"].add({"remote_dir": default_playlist_dir})
+
         config["plex"]["token"].redact = True
         protocol = "https" if config["plex"]["secure"].get() else "http"
 
         baseurl = f"{protocol}://" + config["plex"]["host"].get()
         try:
-            print(f"Attempting to connect to {baseurl}")
+            self._log.info("Attempting to connect to {}", baseurl)
             self.plex = PlexServer(baseurl, config["plex"]["token"].get())
+            self._log.info("Connection established")
         except exceptions.Unauthorized:
             raise ui.UserError("Plex authorization failed")
 
@@ -49,9 +56,9 @@ class GogdPlug(BeetsPlugin):
         key = "playlist_dir"
         return normpath(self.config[key].get(str)).decode("utf-8")
 
-    # def config_relative_to(self) -> str:
-    #     key = "relative_to"
-    #     return normpath(self.config[key].get(str)).decode("utf-8")
+    def config_remote_dir(self) -> str:
+        key = "remote_dir"
+        return normpath(self.config[key].get(str)).decode("utf-8")
 
     def _create_playlist(self, lib, title, tracks, playlist_dir, remote_dir):
         with lib.transaction():
@@ -69,25 +76,33 @@ class GogdPlug(BeetsPlugin):
 
         item_path: Callable[[Item], str] = lambda item: item.path.decode("utf-8")
         paths = [item_path(item) for item in playlist_tracks]
+
         filename = os.path.join(playlist_dir, title + ".m3u")
+
+        self._log.info("Opening playlist file: {}", filename)
         with open(filename, "w") as file:
             write_str = "\n".join(paths)
             file.write(write_str)
 
-        self._log.info("Creating plex playlist from {}", os.path.join(remote_dir, title + ".m3u"))
+        self._log.info(
+            "Creating plex playlist from {}", os.path.join(remote_dir, title + ".m3u")
+        )
         try:
-            self.plex.createPlaylist(title, section=self.music, m3ufilepath=os.path.join(remote_dir, title + ".m3u"))
+            self.plex.createPlaylist(
+                title,
+                section=self.music,
+                m3ufilepath=os.path.join(remote_dir, title + ".m3u"),
+            )
         except Exception as e:
             traceback.print_exc()
             self._log.error("Error creating playlist: {}", e)
-        
 
     def sync(self, lib, playlist_dir, remote_dir):
         if playlist_dir is None:
             playlist_dir = self.config_playlist_dir()
 
-        # if relative_to is None:
-        #     relative_to = self.config_relative_to()
+        if remote_dir is None:
+            remote_dir = self.config_remote_dir()
 
         base = pathlib.Path(
             os.path.join(pathlib.Path(__file__).parent.absolute(), "playlists")
@@ -125,8 +140,18 @@ class SyncCommand(ui.Subcommand):
 
         sync_parser = subparsers.add_parser("sync")
         sync_parser.set_defaults(func=self.sync)
-        sync_parser.add_argument("--playlist-dir", dest="playlist_dir", metavar="PATH", help="local directory to write files to")
-        sync_parser.add_argument("--remote-playlist-dir", dest="remote_dir", metavar="PATH", help="where plex will see the playlist_dir")
+        sync_parser.add_argument(
+            "--playlist-dir",
+            dest="playlist_dir",
+            metavar="PATH",
+            help="local directory to write files to",
+        )
+        sync_parser.add_argument(
+            "--remote-playlist-dir",
+            dest="remote_dir",
+            metavar="PATH",
+            help="where plex will see the playlist_dir",
+        )
 
         super(SyncCommand, self).__init__(
             self.name, parser, self.help, aliases=self.aliases
