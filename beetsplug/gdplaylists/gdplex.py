@@ -14,9 +14,9 @@ from plexapi import exceptions
 from plexapi.server import PlexServer
 
 
-class GogdPlug(BeetsPlugin):
+class GdPlaylists(BeetsPlugin):
     def __init__(self):
-        super(GogdPlug, self).__init__()
+        super(GdPlaylists, self).__init__()
 
         self.config_dir = config.config_dir()
 
@@ -32,9 +32,8 @@ class GogdPlug(BeetsPlugin):
         )
 
         default_playlist_dir = os.path.join(config["directory"].get(), ".playlists")
-        self._log.info("Default playlist_dir: {}", default_playlist_dir)
-        config["gogdplex"].add({"playlist_dir": default_playlist_dir})
-        config["gogdplex"].add({"remote_dir": default_playlist_dir})
+        config["gdplex"].add({"playlist_dir": default_playlist_dir})
+        config["gdplex"].add({"remote_dir": default_playlist_dir})
 
         config["plex"]["token"].redact = True
         protocol = "https" if config["plex"]["secure"].get() else "http"
@@ -79,7 +78,7 @@ class GogdPlug(BeetsPlugin):
 
         filename = os.path.join(playlist_dir, title + ".m3u")
 
-        self._log.info("Opening playlist file: {}", filename)
+        self._log.info("Opening playlist file for writing: {}", filename)
         with open(filename, "w") as file:
             write_str = "\n".join(paths)
             file.write(write_str)
@@ -124,18 +123,18 @@ class GogdPlug(BeetsPlugin):
 
 
 class SyncCommand(ui.Subcommand):
-    name = "gogdsync"
+    name = "gdplex"
     aliases = ()
     help = "Sync Grateful Dead live releases as plex playlists"
 
-    def __init__(self, plugin: GogdPlug):
+    def __init__(self, plugin: GdPlaylists):
         self.plugin = plugin
 
         parser = argparse.ArgumentParser()
         parser.set_defaults(func=self.sync)
 
         subparsers = parser.add_subparsers(
-            prog=parser.prog + " gogdsync", dest="command", required=False
+            prog=parser.prog + " gdplaylists", dest="command", required=False
         )
 
         sync_parser = subparsers.add_parser("sync")
@@ -158,7 +157,8 @@ class SyncCommand(ui.Subcommand):
         )
 
     def sync(self, lib, opts):
-        self.plugin.sync(lib, opts.playlist_dir, opts.remote_dir)
+        o = vars(opts)
+        self.plugin.sync(lib, o.get("playlist_dir"), o.get("remote_dir"))
 
     def func(self, lib, opts, _):
         opts.func(lib, opts)

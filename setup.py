@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="beets-gogdplex",
+    name="beets-gdplaylists",
     version="0.1.1",
     description="beets plugin to create Grateful Dead playlists",
     long_description=open("README.md").read(),
@@ -10,7 +10,7 @@ setup(
     url="https://github.com/chooban/beets-gogd",
     license="MIT",
     platforms="ALL",
-    packages=["beetsplug"],
+    packages=["beetsplug.gdplaylists"],
     install_requires=[
         "beets>=1.6.0",
         "plexapi>=4.15.0",
