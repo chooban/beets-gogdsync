@@ -1,4 +1,2 @@
-include LICENSE
-include README.me
-include beetsplug/gdplaylists/playlists/*
+include beetsplug/gdplaylists/playlists/1971-10-24.yml
 

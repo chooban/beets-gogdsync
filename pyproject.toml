@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name="beets-gdplaylists"
+version="0.1.1"
+description="beets plugin to create Grateful Dead playlists"
+readme="README.md"
+authors=[{name="Ross Hendry", email="rhendry@gmail.com"}]
+# platforms="ALL"
+# packages=["beetsplug.gdplaylists"]
+# install_requires=[
+#   "beets>=1.6.0",
+#   "plexapi>=4.15.0",
+#   "pyyaml>=6"
+# ]
+keywords=["beets", "grateful dead", "plex", "playlists"]
+classifiers=[
+  'Topic :: Multimedia :: Sound/Audio',
+  'License :: OSI Approved :: MIT License',
+  'Environment :: Console',
+  'Programming Language :: Python :: 3'
+]
+
+[project.optional-dependencies]
+dev = [
+  "musicbrainzngs>=0.7.0"
+]
+
+[project.urls]
+Repository="https://github.com/chooban/beets-gogd"
+
+[tool.setuptools]
+include-package-data=true
