@@ -39,10 +39,20 @@ class GdPlaylists(BeetsPlugin):
         protocol = "https" if config["plex"]["secure"].get() else "http"
 
         baseurl = f"{protocol}://" + config["plex"]["host"].get()
+
+        self.plex_url = baseurl
+        self.plex = None
+        self.music = None
+
+
+    def setup(self):
+        if self.plex is not None:
+            return
+
         try:
-            self._log.info("Attempting to connect to {}", baseurl)
-            self.plex = PlexServer(baseurl, config["plex"]["token"].get())
-            self._log.info("Connection established")
+            self._log.debug("Attempting to connect to {}", self.plex_url)
+            self.plex = PlexServer(self.plex_url, config["plex"]["token"].get())
+            self._log.debug("Connection established")
         except exceptions.Unauthorized:
             raise ui.UserError("Plex authorization failed")
 
@@ -50,6 +60,7 @@ class GdPlaylists(BeetsPlugin):
             self.music = self.plex.library.section(config["plex"]["library_name"].get())
         except exceptions.NotFound:
             raise ui.UserError(f"{config['plex']['library_name']} library not found")
+
 
     def config_playlist_dir(self) -> str:
         key = "playlist_dir"
@@ -70,7 +81,7 @@ class GdPlaylists(BeetsPlugin):
 
         # Create m3u playlist
         if len(playlist_tracks) == 0:
-            self._log.info("No tracks found for {}", title)
+            self._log.debug("No tracks found for {}", title)
             return
 
         item_path: Callable[[Item], str] = lambda item: item.path.decode("utf-8")
@@ -78,12 +89,12 @@ class GdPlaylists(BeetsPlugin):
 
         filename = os.path.join(playlist_dir, title + ".m3u")
 
-        self._log.info("Opening playlist file for writing: {}", filename)
+        self._log.debug("Opening playlist file for writing: {}", filename)
         with open(filename, "w") as file:
             write_str = "\n".join(paths)
             file.write(write_str)
 
-        self._log.info(
+        self._log.debug(
             "Creating plex playlist from {}", os.path.join(remote_dir, title + ".m3u")
         )
         try:

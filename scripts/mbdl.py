@@ -5,7 +5,7 @@ import os
 import pathlib
 import yaml
 
-musicbrainzngs.set_useragent("beets-gogdplex", "0.1", "rhendry@gmail.com")
+musicbrainzngs.set_useragent("beets-gdplaylists", "0.1", "rhendry@gmail.com")
 
 def _add_track_to_file(t):
     d = t["date"]
