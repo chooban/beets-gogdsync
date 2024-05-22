@@ -1,2 +1,2 @@
-include beetsplug/gdplaylists/playlists/1971-10-24.yml
+include beetsplug/gdplaylists/playlists/*.yml
 
