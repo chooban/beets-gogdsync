@@ -108,6 +108,7 @@ class GdPlaylists(BeetsPlugin):
             self._log.error("Error creating playlist: {}", e)
 
     def sync(self, lib, playlist_dir, remote_dir):
+        self.setup()
         if playlist_dir is None:
             playlist_dir = self.config_playlist_dir()
 
