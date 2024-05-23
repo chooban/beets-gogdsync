@@ -10,7 +10,7 @@ musicbrainzngs.set_useragent("beets-gdplaylists", "0.1", "rhendry@gmail.com")
 def _add_track_to_file(t):
     d = t["date"]
     output_dir = pathlib.Path(
-        os.path.join(pathlib.Path(__file__).parent.parent.absolute(), "beetsplug", "playlists")
+        os.path.join(pathlib.Path(__file__).parent.parent.absolute(), "beetsplug", "gdplaylists", "playlists")
     )
     playlist_file = os.path.join(str(output_dir), f"{d}.yml")
 
