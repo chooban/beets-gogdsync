@@ -1,5 +1,5 @@
 import musicbrainzngs
-# import sys
+import sys
 from yaml import dump
 import os
 import pathlib
@@ -99,6 +99,12 @@ if __name__ == "__main__":
     with open(str(config), "r") as f_config:
         c = yaml.safe_load(f_config)
      
+    if sys.argv[1] == "--latest":
+        r = c["releases"][-1]
+        print(f"Getting release data for {r.get('title')} ({r.get('mbid')})")
+        download_tracks(r.get("mbid"))
+        sys.exit(0)
+
     for r in c["releases"]:
         print(f"Getting release data for {r.get('title')} ({r.get('mbid')})")
         download_tracks(r.get("mbid"))
