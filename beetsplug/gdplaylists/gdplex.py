@@ -12,6 +12,7 @@ from beets.plugins import BeetsPlugin
 from beets.util import normpath
 from plexapi import exceptions
 from plexapi.server import PlexServer
+from slugify import slugify
 
 
 class GdPlaylists(BeetsPlugin):
@@ -87,21 +88,22 @@ class GdPlaylists(BeetsPlugin):
         item_path: Callable[[Item], str] = lambda item: item.path.decode("utf-8")
         paths = [item_path(item) for item in playlist_tracks]
 
-        filename = os.path.join(playlist_dir, title + ".m3u")
+        filename = slugify(title) + ".m3u"
+        full_path = os.path.join(playlist_dir, filename)
 
-        self._log.debug("Opening playlist file for writing: {}", filename)
-        with open(filename, "w") as file:
+        self._log.debug("Opening playlist file for writing: {}", full_path)
+        with open(full_path, "w") as file:
             write_str = "\n".join(paths)
             file.write(write_str)
 
         self._log.debug(
-            "Creating plex playlist from {}", os.path.join(remote_dir, title + ".m3u")
+            "Creating plex playlist from {}", os.path.join(remote_dir, filename)
         )
         try:
             self.plex.createPlaylist(
                 title,
                 section=self.music,
-                m3ufilepath=os.path.join(remote_dir, title + ".m3u"),
+                m3ufilepath=os.path.join(remote_dir, filename),
             )
         except Exception as e:
             traceback.print_exc()

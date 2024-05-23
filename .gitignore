@@ -6,8 +6,5 @@ config.yaml
 beets_gogd_plex.egg-info/
 beets_gogdplex.egg-info/
 beetsplug/__pycache__/
-beets_gdplaylists.egg-info/dependency_links.txt
-beets_gdplaylists.egg-info/PKG-INFO
-beets_gdplaylists.egg-info/requires.txt
-beets_gdplaylists.egg-info/SOURCES.txt
-beets_gdplaylists.egg-info/top_level.txt
+beets_gdplaylists.egg-info/*
+**/*.pyc

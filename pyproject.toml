@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name="beets-gdplaylists"
-version="0.2.1"
+version="0.2.2"
 dynamic=["dependencies"]
 description="beets plugin to create Grateful Dead playlists"
 readme="README.md"
