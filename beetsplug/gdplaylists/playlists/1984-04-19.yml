@@ -1,27 +1,6 @@
 title: "GOGD - 1984-04-19 - Dave\u2019s Picks, Volume 35: Philadelphia Civic Center,\
   \ Philadelphia, PA \xB7 4/20/1984"
 tracks:
-- title: The Wheel >
-  date: '1984-04-19'
-  mbid: 0bf4f5ed-ac0d-4306-83c8-92b36a4220f6
-  release_title: "Dave\u2019s Picks, Volume 35: Philadelphia Civic Center, Philadelphia,\
-    \ PA \xB7 4/20/1984"
-  release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
-  release_position: 2-6
-- title: Wharf Rat >
-  date: '1984-04-19'
-  mbid: 5bdcda7c-4255-4ec6-ac59-981556a9ac5b
-  release_title: "Dave\u2019s Picks, Volume 35: Philadelphia Civic Center, Philadelphia,\
-    \ PA \xB7 4/20/1984"
-  release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
-  release_position: 2-7
-- title: Sugar Magnolia
-  date: '1984-04-19'
-  mbid: 9a649f6e-da9b-4473-9d7a-c3b37aee1dce
-  release_title: "Dave\u2019s Picks, Volume 35: Philadelphia Civic Center, Philadelphia,\
-    \ PA \xB7 4/20/1984"
-  release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
-  release_position: 2-8
 - title: Space >
   date: '1984-04-19'
   mbid: 14c122ca-1fb6-4798-8946-cd5b4ec01952
@@ -57,3 +36,24 @@ tracks:
     \ PA \xB7 4/20/1984"
   release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
   release_position: 3-10
+- title: The Wheel >
+  date: '1984-04-19'
+  mbid: 0bf4f5ed-ac0d-4306-83c8-92b36a4220f6
+  release_title: "Dave\u2019s Picks, Volume 35: Philadelphia Civic Center, Philadelphia,\
+    \ PA \xB7 4/20/1984"
+  release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
+  release_position: 2-6
+- title: Wharf Rat >
+  date: '1984-04-19'
+  mbid: 5bdcda7c-4255-4ec6-ac59-981556a9ac5b
+  release_title: "Dave\u2019s Picks, Volume 35: Philadelphia Civic Center, Philadelphia,\
+    \ PA \xB7 4/20/1984"
+  release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
+  release_position: 2-7
+- title: Sugar Magnolia
+  date: '1984-04-19'
+  mbid: 9a649f6e-da9b-4473-9d7a-c3b37aee1dce
+  release_title: "Dave\u2019s Picks, Volume 35: Philadelphia Civic Center, Philadelphia,\
+    \ PA \xB7 4/20/1984"
+  release_mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
+  release_position: 2-8
