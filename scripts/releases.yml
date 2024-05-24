@@ -1,4 +1,8 @@
 releases:
+# - title: Rockin' The Rhein
+#   mbid: f8278162-30b5-4d2f-8ade-18c0b5bf241e
+- title: Closing of Winterland
+  mbid: fe59ec56-28f2-4722-afa9-d37d1f92903b
 - title: Listen to the River
   mbid: d50b6763-15b8-44c9-9c86-6fbc73367493
 - title: Pacific Northwest '73-'74
@@ -35,7 +39,5 @@ releases:
   mbid: 399f5ed3-fb18-4953-9ce0-1bc9b986dfc5
 - title: Dave's Picks 35
   mbid: b781f66f-2e9b-450b-a673-69efb7c3757d
-# - title: Rockin' The Rhein
-#   mbid: f8278162-30b5-4d2f-8ade-18c0b5bf241e
-- title: Closing of Winterland
-  mbid: fe59ec56-28f2-4722-afa9-d37d1f92903b
+- title: Dave's Picks 34
+  mbid: 6658e498-d607-40e2-bb66-57e97a0cd01b
