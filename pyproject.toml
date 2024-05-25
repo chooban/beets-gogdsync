@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools >= 61.0", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name="beets-gdplaylists"
-version="0.2.3"
-dynamic=["dependencies"]
+# version="0.2.3"
+dynamic=["dependencies", "version"]
 description="beets plugin to create Grateful Dead playlists"
 readme="README.md"
 authors=[{name="Ross Hendry", email="rhendry@gmail.com"}]
@@ -27,3 +27,6 @@ Repository="https://github.com/chooban/beets-gogd"
 
 [tool.setuptools]
 include-package-data=true
+
+[tool.setuptools_scm]
+# version = {attr = "beets-gdplaylists.VERSION"}
