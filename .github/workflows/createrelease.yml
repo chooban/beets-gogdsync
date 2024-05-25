@@ -28,6 +28,8 @@ jobs:
           echo "Branches where this tag exists : $branch."
 
   create-release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     needs: check-current-branch
     if: contains(${{ needs.check.outputs.branch }}, 'main')`
