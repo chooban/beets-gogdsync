@@ -53,14 +53,6 @@ jobs:
           twine upload dist/*
       - name: Create playlist archive
         run: zip playlists.zip beetsplug/gdplaylists/playlists/*yml
-      - uses: actions/upload-artifact@v4
-        with:
-          name: wheel-${{ github.ref_name }}-${{ github.sha }}
-          path: dist/*
-      - uses: actions/upload-artifact@v4
-        with:
-          name: playlists-${{ github.ref_name }}-${{ github.sha }}
-          path: playlists.zip
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
