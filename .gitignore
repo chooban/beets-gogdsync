@@ -8,3 +8,4 @@ beets_gogdplex.egg-info/
 **/__pycache__/**
 beets_gdplaylists.egg-info/*
 **/*.pyc
+playlists.zip
