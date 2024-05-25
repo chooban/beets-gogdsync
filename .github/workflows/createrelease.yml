@@ -64,5 +64,5 @@ jobs:
         with:
           files: |
             dist/*
-            playlist.zip
+            playlists.zip
 
