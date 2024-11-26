@@ -3,6 +3,7 @@ import sys
 from yaml import dump
 import os
 import pathlib
+from pprint import pprint
 import yaml
 
 musicbrainzngs.set_useragent("beets-gdplaylists", "0.1", "rhendry@gmail.com")
@@ -41,7 +42,7 @@ def _add_track_to_file(t):
     with open(playlist_file, "w") as file:
         dump(existing_playlist, file, sort_keys=False)
 
-def download_tracks(mbid):
+def download_tracks(mbid, print_only):
     try:
         # Get release information
         release_info = musicbrainzngs.get_release_by_id(mbid, 
@@ -84,8 +85,11 @@ def download_tracks(mbid):
                     "release_position": f"{i+1}-{j+1}"
                 })
 
-        for t in playlist["tracks"]:
-            _add_track_to_file(t)
+        if print_only:
+            pprint(playlist)
+        else:
+            for t in playlist["tracks"]:
+                _add_track_to_file(t)
 
 
 
@@ -98,14 +102,16 @@ if __name__ == "__main__":
     )
     with open(str(config), "r") as f_config:
         c = yaml.safe_load(f_config)
+        
+    print_only = "--print" in sys.argv
      
-    if len(sys.argv) > 1 and sys.argv[1] == "--latest":
+    if len(sys.argv) > 1 and "--latest" in sys.argv:
         r = c["releases"][-1]
         print(f"Getting release data for {r.get('title')} ({r.get('mbid')})")
-        download_tracks(r.get("mbid"))
+        download_tracks(r.get("mbid"), print_only)
         sys.exit(0)
 
     for r in c["releases"]:
         print(f"Getting release data for {r.get('title')} ({r.get('mbid')})")
-        download_tracks(r.get("mbid"))
+        download_tracks(r.get("mbid"), print_only)
 
