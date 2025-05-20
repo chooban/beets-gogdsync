@@ -1,6 +1,4 @@
 releases:
-- title: Dave's Picks 54
-  mbid: ee2bb2be-dfd6-4a66-a43d-a324437e1ea3
 - title: Friend of the Devils
   mbid: 015d5207-1765-4285-8833-b5f3e568e405
 - title: Rockin' The Rhein
@@ -63,3 +61,5 @@ releases:
   mbid: 87c8b5bd-592d-48a5-beed-5dcc7bd9c5c8
 - title: Dave's Picks 30
   mbid: 58729adf-a698-4461-8770-cc972a88c909
+- title: Dave's Picks 54
+  mbid: ee2bb2be-dfd6-4a66-a43d-a324437e1ea3
