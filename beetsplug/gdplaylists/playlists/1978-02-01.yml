@@ -55,12 +55,6 @@ tracks:
   release_title: "Dave\u2019s Picks, Volume 57: Uptown Theatre, Chicago, IL \xB7 2/1/78"
   release_mbid: ce653d73-b387-4243-8f52-365982cab539
   release_position: 1-9
-- title: Around and Around
-  date: '1978-02-01'
-  mbid: a2358ada-8e3b-4924-9747-9c8b71bdc6ca
-  release_title: "Dave\u2019s Picks, Volume 57: Uptown Theatre, Chicago, IL \xB7 2/1/78"
-  release_mbid: ce653d73-b387-4243-8f52-365982cab539
-  release_position: 1-10
 - title: It Must Have Been the Roses
   date: '1978-02-01'
   mbid: b2c1b6d8-7d34-444f-abb5-4b7dcfa516c6
@@ -109,3 +103,9 @@ tracks:
   release_title: "Dave\u2019s Picks, Volume 57: Uptown Theatre, Chicago, IL \xB7 2/1/78"
   release_mbid: ce653d73-b387-4243-8f52-365982cab539
   release_position: 2-8
+- title: Around and Around
+  date: '1978-02-01'
+  mbid: a2358ada-8e3b-4924-9747-9c8b71bdc6ca
+  release_title: "Dave\u2019s Picks, Volume 57: Uptown Theatre, Chicago, IL \xB7 2/1/78"
+  release_mbid: ce653d73-b387-4243-8f52-365982cab539
+  release_position: 1-10
